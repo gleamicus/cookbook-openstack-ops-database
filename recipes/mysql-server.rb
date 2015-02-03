@@ -33,6 +33,8 @@ else
   super_password = node['mysql']['server_root_password']
 end
 
+debian_password = get_password 'user', 'debian_mysql_password'
+
 node.override['mysql']['tunable']['default-storage-engine'] = 'InnoDB'
 node.override['mysql']['bind_address'] = db_endpoint.host
 node.override['mysql']['tunable']['innodb_thread_concurrency'] = '0'
@@ -50,7 +52,7 @@ mysql_service node['mysql']['service_name'] do
   port node['mysql']['port']
   data_dir node['mysql']['data_dir']
   server_root_password super_password
-  server_debian_password node['mysql']['server_debian_password']
+  server_debian_password debian_password
   server_repl_password node['mysql']['server_repl_password']
   allow_remote_root node['mysql']['allow_remote_root']
   remove_anonymous_users node['mysql']['remove_anonymous_users']
